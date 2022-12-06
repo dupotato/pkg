@@ -2,7 +2,7 @@
  * @Author: dueb dueb@channelsoft.com
  * @Date: 2022-12-03 17:24:37
  * @LastEditors: dueb dueb@channelsoft.com
- * @LastEditTime: 2022-12-03 22:48:07
+ * @LastEditTime: 2022-12-06 11:21:37
  * @FilePath: /pkg/logger/logger.go
  * @Description:
  *
@@ -10,12 +10,46 @@
  */
 package logger
 
+import (
+	"fmt"
+)
+
 func init() {
 
 }
 
+type Severity int
+
+const (
+	DEBUG Severity = iota
+	INFO
+	WARN
+	ERROR
+	FATAL
+)
+
+var severityName = []string{
+	FATAL: "FATAL",
+	ERROR: "ERROR",
+	WARN:  "WARN",
+	INFO:  "INFO",
+	DEBUG: "DEBUG",
+}
+
+const (
+	numSeverity = 5
+)
+
+type LType int
+
+const (
+	DEFAULTLOG LType = iota
+	ZEROLOG
+	SYSLOG
+)
+
 type LConfig struct {
-	Type            string
+	Type            LType
 	Level           int
 	SyslogPriority  string
 	SyslogSeverity  string
@@ -25,10 +59,68 @@ type LConfig struct {
 	FileRotateSize  uint64
 	RotateByHour    bool
 	KeepHours       uint
+	Dev             bool
 }
 
+var lcing *LConfig
+
 func NewLogger(lc LConfig) {
-	if lc.Type == "zerolog" {
+	switch lc.Type {
+	case ZEROLOG:
 		InitZero(lc)
+	case SYSLOG:
+		InitSyslog("local0", lc.FileName)
+	}
+	lcing = &lc
+}
+
+func Debugf(s string, v ...interface{}) {
+	switch lcing.Type {
+	case ZEROLOG:
+		zDebugf(&s, &v)
+	case SYSLOG:
+		sysDebugf(&s, &v)
+	default:
+		fmt.Printf(s, v)
+	}
+}
+func Infof(s string, v ...interface{}) {
+	switch lcing.Type {
+	case ZEROLOG:
+		zInfof(&s, &v)
+	case SYSLOG:
+		sysInfof(&s, &v)
+	default:
+		fmt.Printf(s, v)
+	}
+}
+func Warnf(s string, v ...interface{}) {
+	switch lcing.Type {
+	case ZEROLOG:
+		zWarnf(&s, &v)
+	case SYSLOG:
+		sysWarnf(&s, &v)
+	default:
+		fmt.Printf(s, v)
+	}
+}
+func Errorf(s string, v ...interface{}) {
+	switch lcing.Type {
+	case ZEROLOG:
+		zErrorf(&s, &v)
+	case SYSLOG:
+		sysErrorf(&s, &v)
+	default:
+		fmt.Printf(s, v)
+	}
+}
+func Fatalf(s string, v ...interface{}) {
+	switch lcing.Type {
+	case ZEROLOG:
+		zFatalf(&s, &v)
+	case SYSLOG:
+		sysFatalf(&s, &v)
+	default:
+		fmt.Printf(s, v)
 	}
 }

@@ -2,7 +2,7 @@
  * @Author: dueb dueb@channelsoft.com
  * @Date: 2022-12-03 22:17:17
  * @LastEditors: dueb dueb@channelsoft.com
- * @LastEditTime: 2022-12-03 22:53:53
+ * @LastEditTime: 2022-12-05 18:25:15
  * @FilePath: /pkg/logger/zerolog.go
  * @Description:
  *
@@ -68,23 +68,7 @@ func zero_loadConfig(lc LConfig) {
 			}),
 		).With().Logger()
 	}
-	Infof("init zerolog over")
-}
-
-func Debugf(s string, v ...interface{}) {
-	logEvent(zz.Debug(), &s, &v)
-}
-func Infof(s string, v ...interface{}) {
-	logEvent(zz.Info(), &s, &v)
-}
-func Warnf(s string, v ...interface{}) {
-	logEvent(zz.Warn(), &s, &v)
-}
-func Errorf(s string, v ...interface{}) {
-	logEvent(zz.Error(), &s, &v)
-}
-func Fatalf(s string, v ...interface{}) {
-	logEvent(zz.Fatal(), &s, &v)
+	//Infof("init zerolog over")
 }
 
 func logEvent(e *zerolog.Event, s *string, v *[]interface{}) {
@@ -93,4 +77,20 @@ func logEvent(e *zerolog.Event, s *string, v *[]interface{}) {
 	} else {
 		e.Msgf(*s)
 	}
+}
+
+func zDebugf(s *string, v *[]interface{}) {
+	logEvent(zz.Debug(), s, v)
+}
+func zInfof(s *string, v *[]interface{}) {
+	logEvent(zz.Info(), s, v)
+}
+func zWarnf(s *string, v *[]interface{}) {
+	logEvent(zz.Warn(), s, v)
+}
+func zErrorf(s *string, v *[]interface{}) {
+	logEvent(zz.Error(), s, v)
+}
+func zFatalf(s *string, v *[]interface{}) {
+	logEvent(zz.Fatal(), s, v)
 }
