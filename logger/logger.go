@@ -2,7 +2,7 @@
  * @Author: dueb dueb@channelsoft.com
  * @Date: 2022-12-03 17:24:37
  * @LastEditors: dueb dueb@channelsoft.com
- * @LastEditTime: 2022-12-06 11:21:37
+ * @LastEditTime: 2022-12-27 11:09:24
  * @FilePath: /pkg/logger/logger.go
  * @Description:
  *
@@ -13,10 +13,6 @@ package logger
 import (
 	"fmt"
 )
-
-func init() {
-
-}
 
 type Severity int
 
@@ -62,7 +58,11 @@ type LConfig struct {
 	Dev             bool
 }
 
-var lcing *LConfig
+var lcing LConfig
+
+func init() {
+	lcing.Type = DEFAULTLOG
+}
 
 func NewLogger(lc LConfig) {
 	switch lc.Type {
@@ -71,7 +71,7 @@ func NewLogger(lc LConfig) {
 	case SYSLOG:
 		InitSyslog("local0", lc.FileName)
 	}
-	lcing = &lc
+	lcing = lc
 }
 
 func Debugf(s string, v ...interface{}) {
@@ -81,7 +81,7 @@ func Debugf(s string, v ...interface{}) {
 	case SYSLOG:
 		sysDebugf(&s, &v)
 	default:
-		fmt.Printf(s, v)
+		fmt.Printf(s+"\n", v...)
 	}
 }
 func Infof(s string, v ...interface{}) {
@@ -91,7 +91,8 @@ func Infof(s string, v ...interface{}) {
 	case SYSLOG:
 		sysInfof(&s, &v)
 	default:
-		fmt.Printf(s, v)
+		//fmt.Printf(s, v)
+		fmt.Printf(s+"\n", v...)
 	}
 }
 func Warnf(s string, v ...interface{}) {
@@ -101,7 +102,8 @@ func Warnf(s string, v ...interface{}) {
 	case SYSLOG:
 		sysWarnf(&s, &v)
 	default:
-		fmt.Printf(s, v)
+		fmt.Printf(s+"\n", v...)
+		//fmt.Printf("\n")
 	}
 }
 func Errorf(s string, v ...interface{}) {
@@ -111,7 +113,8 @@ func Errorf(s string, v ...interface{}) {
 	case SYSLOG:
 		sysErrorf(&s, &v)
 	default:
-		fmt.Printf(s, v)
+		//fmt.Printf(s, v)
+		fmt.Printf(s+"\n", v...)
 	}
 }
 func Fatalf(s string, v ...interface{}) {
@@ -121,6 +124,9 @@ func Fatalf(s string, v ...interface{}) {
 	case SYSLOG:
 		sysFatalf(&s, &v)
 	default:
-		fmt.Printf(s, v)
+		//fmt.Printf(s, v)
+		fmt.Printf(s+"\n", v...)
 	}
 }
+
+// no format
