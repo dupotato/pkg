@@ -2,7 +2,7 @@
  * @Author: dueb dueb@channelsoft.com
  * @Date: 2022-12-27 09:53:59
  * @LastEditors: dueb dueb@channelsoft.com
- * @LastEditTime: 2022-12-27 09:54:03
+ * @LastEditTime: 2023-01-06 16:30:36
  * @FilePath: /pkg/file/filehandle.go
  * @Description:
  *
@@ -63,4 +63,12 @@ func isExist(path string) bool {
 		return false
 	}
 	return true
+}
+
+func Deletefile(file string) {
+	os.Remove(file)
+}
+
+func DeleteAllFile(path string) {
+	os.RemoveAll(path)
 }

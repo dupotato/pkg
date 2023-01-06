@@ -2,7 +2,7 @@
  * @Author: dueb dueb@channelsoft.com
  * @Date: 2022-12-04 10:21:26
  * @LastEditors: dueb dueb@channelsoft.com
- * @LastEditTime: 2022-12-06 16:38:55
+ * @LastEditTime: 2023-01-06 14:57:02
  * @FilePath: /pkg/file/file.go
  * @Description:
  *
@@ -41,7 +41,7 @@ func MkdirIfNecessary(createDir string) (err error) {
 	}
 	for i := startIndex; i < len(s); i++ {
 		var d string
-		if osType == WINDOWS && filepath.IsAbs(createDir) {
+		if filepath.IsAbs(createDir) {
 			d = strings.Join(s[startIndex:i+1], path)
 		} else {
 			d = dir + path + strings.Join(s[startIndex:i+1], path)
