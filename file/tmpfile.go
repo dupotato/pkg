@@ -2,7 +2,7 @@
  * @Author: dueb dueb@channelsoft.com
  * @Date: 2023-01-06 10:34:22
  * @LastEditors: dueb dueb@channelsoft.com
- * @LastEditTime: 2023-01-06 16:42:39
+ * @LastEditTime: 2023-01-09 14:17:12
  * @FilePath: /pkg/file/tmpfile.go
  * @Description:
  *
@@ -84,7 +84,7 @@ func (t *TmpFileManager) StartWork() {
 func (t *TmpFileManager) checkTime() {
 	t.mutexFileList.Lock()
 	defer t.mutexFileList.Unlock()
-	if len(t.fileList) > 0 {
+	if len(t.fileList) > 0 || len(t.fileListBak) > 0 {
 		if len(t.fileListBak) > 0 {
 			for _, v := range t.fileListBak {
 				t.deleteQueue <- v
